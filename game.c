@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// TODO: PROTOTIPI DI OGNI FUNZIONE D'ACCESSO
-
-
+#include <unistd.h>
 
 #define NUM_SYMBOL_BASIC 6
 #define NUM_SYMBOL_INTERMEDIATE 8
@@ -13,7 +11,7 @@
 #define CODE_LENGTH_INTERMEDIATE 4 // stesso valore di CODE_LENGTH_ADVANCED
 #define REPEATED_BASIC 0 // stesso valore di REPEATED_INTERMEDIATE
 #define REPEATED_ADVANCED 1
-#define NUM_ATTEMPTS_BASIC 20
+#define NUM_ATTEMPTS_BASIC 20 // PER MOTIVI DI TEST; RIMETTERE A 20
 #define NUM_ATTEMPTS_INTERMEDIATE 15
 #define NUM_ATTEMPTS_ADVANCED 9
 #define START_LOWERCASE_ASCII 97
@@ -30,7 +28,7 @@ typedef struct Match {
     int level;
     char codeToGuess[CODE_LENGTH_INTERMEDIATE];
     char attempts[NUM_ATTEMPTS_BASIC][CODE_LENGTH_INTERMEDIATE];
-    int attemptsResult[NUM_ATTEMPTS_BASIC][1];
+    int attemptsResult[NUM_ATTEMPTS_BASIC][2];
     int end; 
 } Match;
 
@@ -48,8 +46,8 @@ int getRepeated(Parameters param);
 void getSymbol(Parameters param, char symbol[NUM_ATTEMPTS_ADVANCED]);
 int getLevel(Match match);
 void getCodeToGuess(Match match, Parameters param, char codeToGuess[CODE_LENGTH_INTERMEDIATE]);
-void getAttempts(Match match, Parameters param, int numAttempt, char *attempt);
-void getAttemptsResult(Match match, Parameters param, int numAttempt, char *attemptResult);
+void getAttempts(Match match, Parameters param, int numAttempt, char attempt[CODE_LENGTH_INTERMEDIATE]);
+void getAttemptsResult(Match match, Parameters param, int numAttempt, int attemptResult[2]);
 int getEnd(Match match);
 
 Parameters setNumSymbol(Parameters param, int numSymbol);
@@ -60,19 +58,18 @@ Parameters setSymbol(Parameters param, int numSymbol);
 Match setLevel(Match match, int level);
 Match setCodeToGuess(Match match, Parameters param, char codeToGuess[CODE_LENGTH_INTERMEDIATE]);
 Match setAttempt(Match match, Parameters param, int numAttempt, char attempt[CODE_LENGTH_INTERMEDIATE]);
-Match setAttemptResult(Match match, Parameters param, int numAttempt, char attemptResult[1]);
+Match setAttemptResult(Match match, Parameters param, int numAttempt, int attemptResult[2]);
 Match setEnd(Match match, int end);
 
-Match initializeAttempts(Match match, Parameters param);
 Match generateCode(Match match, Parameters param);
-void printAttempts(Match match, Parameters param, int numAttempts);
 Match newAttempt(Match match, Parameters param, int attemptsSoFar);
 Match validateInput(Match match, Parameters param, int attemptsSoFar, char input[CODE_LENGTH_INTERMEDIATE]);
 Match checkCode(Match match, Parameters param, int attemptsSoFar, char input[CODE_LENGTH_INTERMEDIATE]);
 int isCharInCodeToGuess(Match match, Parameters param, char input[CODE_LENGTH_INTERMEDIATE], int i);
-void printAttemptResult(Match match, Parameters param, int numAttempt);
-int randomNum(Parameters param, int max);
-Match winner(Match match, Parameters param, int attemptSoFar);
+void printAttempts(Match match, Parameters param, int i);
+void printAttemptResult(Match match, Parameters param, int i);
+Match winner(Match match, Parameters param, int attemptsSoFar);
+void saveGame(Match match, Parameters param, int attemptsSoFar);
 
 int main() {
     menu();
@@ -174,18 +171,18 @@ void getAttempts(Match match, Parameters param, int numAttempt, char attempt[COD
     i = 0;
     length = getCodeLength(param);
     while (i < length) {
-        attempt[numAttempt] = match.attempts[numAttempt][i];
+        attempt[i] = match.attempts[numAttempt][i];
         i++;
     }
     return;
 }
 
-void getAttemptsResult(Match match, Parameters param, int numAttempt, char attemptResult[1]) {
-    int i;
-    i = 0;
-    while (i < 2) {
-        attemptResult[i] = match.attemptsResult[numAttempt][i];
-        i++;
+void getAttemptsResult(Match match, Parameters param, int numAttempt, int attemptResult[2]) {
+    int j;
+    j = 0;
+    while (j < 2) {
+        attemptResult[j] = match.attemptsResult[numAttempt][j];
+        j++;
     }
     return;
 }
@@ -226,7 +223,7 @@ Match setAttempt(Match match, Parameters param, int numAttempt, char attempt[COD
     return match;
 }
 
-Match setAttemptResult(Match match, Parameters param, int numAttempt, char attemptResult[1]) {
+Match setAttemptResult(Match match, Parameters param, int numAttempt, int attemptResult[2]) {
     int i;
     i = 0;
     while (i < 2) {
@@ -238,28 +235,6 @@ Match setAttemptResult(Match match, Parameters param, int numAttempt, char attem
 
 Match setEnd(Match match, int end) {
     match.end = end;
-    return match;
-}
-
-Match initializeAttempts(Match match, Parameters param) {
-    int i;
-    int j;
-    i = 0;
-    int numAttempts;
-    int codeLength;
-    codeLength = getCodeLength(param);
-    numAttempts = getNumAttempts(param);
-    char attempts[codeLength];
-    while (i < codeLength) {
-        attempts[i] = '-';
-        i++;
-    }
-
-    i = 0;
-    while (i < numAttempts) {
-        match = setAttempt(match, param, i, attempts);
-        i++; 
-    }
     return match;
 }
 
@@ -337,7 +312,6 @@ int startMatch() {
     ended = 0;
     choice = ' ';
     
-
     showChoice(stage);
     choice = userChoice(stage);
     if (choice == '1') {
@@ -385,15 +359,11 @@ int newGameLoop() {
         param = setRepeated(param, 0);
         param = setNumAttempts(param, 15);
         match = generateCode(match, param);
-        while (ended == 0) {
-            i = 0;
-            while (i < attemptsSoFar) {
-                printAttempts(match, param, i);
-                i++;
-            }
-            ended = 1;
+        match = setEnd(match, 0);
+        while (getEnd(match) == 0) {
+            match = newAttempt(match, param, attemptsSoFar);
         }
-        ended = 1;
+        ended = getEnd(match);
     } else if (choice == '3') {
         match = setLevel(match, 3);
         param = setNumSymbol(param, 10);
@@ -402,91 +372,113 @@ int newGameLoop() {
         param = setRepeated(param, 1);
         param = setNumAttempts(param, 9);
         match = generateCode(match, param);
-        while (ended == 0) {
-            i = 0;
-            while (i < attemptsSoFar) {
-                printAttempts(match, param, i);
-                i++;
-            }
-            ended = 1;
+        match = setEnd(match, 0);
+        while (getEnd(match) == 0) {
+            match = newAttempt(match, param, attemptsSoFar);
         }
-        ended = 1;
+        ended = getEnd(match);
     }    
     return ended;
 }
 
 Match generateCode(Match match, Parameters param) {
-    int random;
+    int randomSymbol;
     int numSymbol;
     int codeLength;
     int i;
+    int j;
+    int elementAmount;
+    int isValid;
 
     srand(time(0));
     numSymbol = getNumSymbol(param);
     codeLength = getCodeLength(param);
-    i = 0;
     char symbol[numSymbol];
     getSymbol(param, symbol);
     char codeToGuess[codeLength];
-    char a[codeLength];
-    while (i < codeLength) {    
-        if (getRepeated(param) == 0) {
-            while (random != codeToGuess[i - 1]) {
-                random = randomNum(param, numSymbol);       
-                codeToGuess[i] = random + START_LOWERCASE_ASCII - 1;
-                random = codeToGuess[i - 1];
-            }
-        } else {
-            random = randomNum(param, numSymbol);
-            codeToGuess[i] = random + START_LOWERCASE_ASCII - 1;
-        }
-        i++;  
-    } 
     
+    i = 0;
+    j = 0;
+    elementAmount = 0;
+    isValid = 1;
+    if (getRepeated(param) == 1) {
+        while (i < codeLength)
+        {
+            j = 0;
+            isValid = 1;
+            randomSymbol = 1 + rand() % numSymbol;
+            
+            while (j < elementAmount)
+            {
+                if (codeToGuess[j] == randomSymbol + START_LOWERCASE_ASCII - 1)
+                {
+                    j = elementAmount;
+                    isValid = 0;
+                }
+
+                j++;
+            }
+
+            
+            if (isValid == 1)
+            {
+                codeToGuess[i] = randomSymbol + START_LOWERCASE_ASCII - 1;
+                elementAmount++;
+                i++;
+            }
+        }
+    } else {
+        while (i < codeLength) {
+            randomSymbol = 1 + rand() % numSymbol;
+            codeToGuess[i] = randomSymbol + START_LOWERCASE_ASCII - 1;
+            i++; 
+        }
+    }
+   
     match = setCodeToGuess(match, param, codeToGuess);
     return match;
 }
 
-int randomNum(Parameters param, int max) { 
-    int random;
-    random = 1 + rand() % max;
-    return random;
-}
 
-void printAttempts(Match match, Parameters param, int numAttempts) {
-    int i;
+void printAttempts(Match match, Parameters param, int i) {
     int j;
-
     int codeLength;
-    i = 0;
     codeLength = getCodeLength(param);
-
+    int numAttempts;
     j = 0;
-    while (i <= numAttempts) {
-        j = 0;
-        printf("Tentativo numero %d: ", i);
-        while (j < codeLength) {
-            printf(" %c ", match.attempts[i][j]);
-            j++;
-        }
-        printf("\n");
-        i++;
+    char attempts[codeLength];
+    printf("Tentativo numero %d: ", i + 1);
+    getAttempts(match, param, i, attempts);
+    j = 0;
+    while (j < codeLength) {
+        printf(" %c ", attempts[j]);
+        j++;
     }
-    i++; 
     
+    printf("\n");
+    i++;
+
     return;
 }
 
 Match newAttempt(Match match, Parameters param, int attemptsSoFar) {
     int codeLength;
+    int i;
+    char inputC;
     codeLength = getCodeLength(param);
     char input[codeLength];
-    while (getEnd(match) == 0 && attemptsSoFar < getNumAttempts(param)) {
+    while (getEnd(match) == 0) {
         match = validateInput(match, param, attemptsSoFar, input);
+        system("cls");
         match = checkCode(match, param, attemptsSoFar, input);
-        printAttempts(match, param, attemptsSoFar);
-        printAttemptResult(match, param, attemptsSoFar);
+        i = 0;
+        while (i <= attemptsSoFar) {
+            printAttempts(match, param, i);
+            printAttemptResult(match, param, i);
+            i++;
+        }
         match = winner(match, param, attemptsSoFar);
+        saveGame(match, param, attemptsSoFar);        
         attemptsSoFar++;
     }
     return match;
@@ -520,7 +512,7 @@ Match checkCode(Match match, Parameters param, int attemptsSoFar, char input[COD
     int i;
     codeLength = getCodeLength(param);
     char codeToGuess[codeLength];
-    char attemptResult[1];
+    int attemptResult[2];
     attemptResult[0] = 0;
     attemptResult[1] = 0;
     getCodeToGuess(match, param, codeToGuess);
@@ -556,7 +548,7 @@ int isCharInCodeToGuess(Match match, Parameters param, char input[CODE_LENGTH_IN
    
     j = 0;
     while (j < codeLength && found == 0) {
-        if (input[i] == codeToGuess[j]) {
+        if (input[i] == codeToGuess[j] && input[i] != codeToGuess[i]) {
             found = 1;
         }
         j++;
@@ -565,25 +557,45 @@ int isCharInCodeToGuess(Match match, Parameters param, char input[CODE_LENGTH_IN
     return found;
 }
 
-void printAttemptResult(Match match, Parameters param, int numAttempt) {
-    char attemptResult[1];
-    getAttemptsResult(match, param, numAttempt, attemptResult);
+void printAttemptResult(Match match, Parameters param, int i) {
+    int attemptResult[2];
+    getAttemptsResult(match, param, i, attemptResult);
     printf("Lettere giuste in posizione corretta: %d\nLettere giuste in posizione sbagliata: %d\n", attemptResult[0], attemptResult[1]);
-    // FIXME: AGGIUSTARE IL COUNTER DELLE POSIZIONI SBAGLIATE
     return;
 }
 
-Match winner(Match match, Parameters param, int attemptSoFar) {
-    char attemptResult[1];
+Match winner(Match match, Parameters param, int attemptsSoFar) {
+    int attemptResult[2];
     int codeLength;
+    getAttemptsResult(match, param, attemptsSoFar, attemptResult);
     codeLength = getCodeLength(param);
-    getAttemptsResult(match, param, attemptSoFar, attemptResult);
-    if (attemptResult[0] == codeLength) { // FIXME: SE I VALORI DELL'ARRAY SONO 0 STAMPA LA VITTORIA E TERMINA LA PARTITA
+    if (attemptResult[0] == codeLength) {
         printf("PARTITA FINITA: HA VINTO IL DECODIFICATORE!\n");
         match = setEnd(match, 1);
-    } else if (attemptSoFar > getNumAttempts(param)) {
+    } else if (attemptsSoFar == getNumAttempts(param) - 1) {
         printf("PARTITA FINITA: HA VINTO IL CODIFICATORE!\n");
         match = setEnd(match, 1);
     }
     return match;
+}
+
+void saveGame(Match match, Parameters param, int attemptsSoFar) {
+    FILE *fp;
+    int level;
+    char input;
+    input = ' ';
+    level = getLevel(match);
+    char levelChar;
+    levelChar = level + 48;
+    fp = fopen("C:/Users/acurr/Desktop/Universita/I Anno - II Semestre/Laboratorio di Informatica/MasterMind/mastermind-C/save_game.txt", "w");
+    if (fp == NULL)
+    {
+        printf("File non aperto");
+    }
+    printf("VUOI SALVARE LA PARTITA (S/N)?: ");
+    scanf("%c", &input);
+    fflush(stdin);
+    if (input == 'S') {
+        putw(levelChar, fp);
+    }    
 }
