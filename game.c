@@ -405,43 +405,38 @@ Match generateCode(Match match, Parameters param) {
     elementAmount = 0;
     isValid = 1;
     
-    // if (getRepeated(param) == 0) {
-    //     while (i < codeLength)
-    //     {
-    //         j = 0;
-    //         isValid = 1;
-    //         randomSymbol = 1 + rand() % numSymbol;
-            
-    //         while (j < elementAmount)
-    //         {
-    //             if (codeToGuess[j] == randomSymbol + START_LOWERCASE_ASCII - 1)
-    //             {
-    //                 j = elementAmount;
-    //                 isValid = 0;
-    //             }
+    if (getRepeated(param) == 0) {
+        while (i < codeLength)
+        {
+            j = 0;
+            isValid = 1;
+            randomSymbol = 1 + rand() % numSymbol;
+           
+            while (j < elementAmount)
+            {
+                if (codeToGuess[j] == randomSymbol + START_LOWERCASE_ASCII - 1)
+                {
+                    j = elementAmount;
+                    isValid = 0;
+                }
+                j++;
+            }
+           
+            if (isValid == 1)
+            {
+                codeToGuess[i] = randomSymbol + START_LOWERCASE_ASCII - 1;
+                elementAmount++;
+                i++;
+            }
+        }
+   } else {
+        while (i < codeLength) {
+            randomSymbol = 1 + rand() % numSymbol;
+            codeToGuess[i] = randomSymbol + START_LOWERCASE_ASCII - 1;
+            i++; 
+        }
+    }
 
-    //             j++;
-    //         }
-
-            
-    //         if (isValid == 1)
-    //         {
-    //             codeToGuess[i] = randomSymbol + START_LOWERCASE_ASCII - 1;
-    //             elementAmount++;
-    //             i++;
-    //         }
-    //     }
-    // } else {
-    //     while (i < codeLength) {
-    //         randomSymbol = 1 + rand() % numSymbol;
-    //         codeToGuess[i] = randomSymbol + START_LOWERCASE_ASCII - 1;
-    //         i++; 
-    //     }
-    // }
-    codeToGuess[0] = 'a';
-    codeToGuess[1] = 'd';
-    codeToGuess[2] = 'c';
-    codeToGuess[3] = 'd';
     match = setCodeToGuess(match, param, codeToGuess);
     return match;
 }
@@ -451,11 +446,9 @@ void countLetter(Match match, Parameters param, int lettere[NUM_SYMBOL_ADVANCED]
     int j;
     int dim;
     int codeLength;
-    // int numSymbol;
     codeLength = getCodeLength(param);
     char codeToGuess[codeLength];
     getCodeToGuess(match, param, codeToGuess);
-    // numSymbol = getNumSymbol(param);
 
     int charToNumber;
     i = 0;
@@ -464,9 +457,7 @@ void countLetter(Match match, Parameters param, int lettere[NUM_SYMBOL_ADVANCED]
         while (j < codeLength) { 
             if (codeToGuess[i] == codeToGuess[j]) {
                 charToNumber = codeToGuess[j] - START_LOWERCASE_ASCII;
-                // printf("ciclo %d: CHARTONUMBER DI %c: %d\n", j, codeToGuess[j], charToNumber);
                 lettere[charToNumber] = lettere[charToNumber] + 1;
-                // printf("lett[%d]: %d\n", charToNumber, lettere[charToNumber]);
                 codeToGuess[j] = '.';
             }
             j++;
@@ -474,13 +465,6 @@ void countLetter(Match match, Parameters param, int lettere[NUM_SYMBOL_ADVANCED]
         i++;
     }
 
-    // printf("\n");
-    // i = 0;
-    // while (i < numSymbol) {
-    //     printf("%d: %d", i, lettere[i]);    
-    //     printf("\n");
-    //     i++;
-    // }
     return;
 }
 
@@ -556,8 +540,6 @@ Match checkCode(Match match, Parameters param, int attemptsSoFar, char input[COD
     codeLength = getCodeLength(param);
     char codeToGuess[codeLength];
     int attemptResult[2];
-    // int dim;
-    // char alreadyScanned[codeLength];
     
     attemptResult[0] = 0;
     attemptResult[1] = 0;
@@ -612,7 +594,6 @@ Match checkCode(Match match, Parameters param, int attemptsSoFar, char input[COD
             } 
         } else {
             if (lungh[charToNumber] > 0) {
-                // attemptResult[1]++;
                 PS++;
             }
         }
