@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "./struct.h"
+
 // FUNZIONI DI ACCESSO DI CODE
 char getValue(Code code, int index) {
     int value;
