@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "./game.h"
-
 void tutorial();
 
 #endif
