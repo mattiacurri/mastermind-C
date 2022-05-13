@@ -2,6 +2,6 @@
 #define _SAVE_GAME_H
 
 void saveGame(Match match);
-void loadGame();
+int loadGame();
 
 #endif

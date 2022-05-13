@@ -42,12 +42,12 @@ void showChoice(char choice) {
     if (choice == 'm') {
         printf("BENVENUTO AL GIOCO DEL MASTERMIND\n");
         printf("--- MENU PRINCIPALE ---\n");
-        printf("1. NUOVA PARTITA \n");
+        printf("1. GIOCA PARTITA \n");
         printf("2. TOP 10\n");
         printf("3. GUIDA AL GIOCO\n");
         printf("4. ESCI DAL GIOCO\n");
     } else if(choice == 'n') {
-        printf("HAI SCELTO DI INIZIARE UNA PARTITA. \n");
+        printf("HAI SCELTO DI GIOCARE UNA PARTITA. \n");
         printf("SCEGLI TRA LE SEGUENTI OPZIONI:\n");
         printf("1. NUOVA PARTITA\n");
         printf("2. CARICA PARTITA\n");
@@ -91,15 +91,15 @@ int startMatch() {
     choice = userChoice(1, 2);
     system("cls");
     if (choice == '1') {
-        gameLoop(TRUE);
+        ended = gameLoop(TRUE);
     } else if (choice == '2') {
-        loadGame();
+        ended = loadGame();
     }
 
     return ended;
 }
 
-void gameLoop(int isNew) {
+int gameLoop(int isNew) {
     Match match;
     Parameters param;
     int ended;
@@ -122,10 +122,10 @@ void gameLoop(int isNew) {
             match = setParameters(match, param);
             match = generateCode(match);
             match = setAttemptsSoFar(match, NUM_ATTEMPTS_BASIC);
-            initAttempts(match);
+            match = initAttempts(match);
             printAttempts(match);
             match = setAttemptsSoFar(match, 0);
-            gameChoice(match);
+            ended = gameChoice(match);
         } else if (choice == '2') {
             param = setNumSymbol(param, 8);
             param = setCodeLength(param, 4);
@@ -134,10 +134,10 @@ void gameLoop(int isNew) {
             match = setParameters(match, param);
             match = generateCode(match);
             match = setAttemptsSoFar(match, NUM_ATTEMPTS_INTERMEDIATE);
-            initAttempts(match);
+            match = initAttempts(match);
             printAttempts(match);
             match = setAttemptsSoFar(match, 0);
-            gameChoice(match);
+            ended = gameChoice(match);
         } else if (choice == '3') {
             param = setNumSymbol(param, 10);
             param = setCodeLength(param, 4);
@@ -149,12 +149,12 @@ void gameLoop(int isNew) {
             match = initAttempts(match);
             printAttempts(match);
             match = setAttemptsSoFar(match, 0);
-            gameChoice(match);
+            ended = gameChoice(match);
         }
     } else {
-        gameChoice(match);
+        ended = gameChoice(match);
     }
-    return;
+    return ended;
 }
 
 Match generateCode(Match match) {
@@ -171,7 +171,6 @@ Match generateCode(Match match) {
     numSymbol = getNumSymbol(getParam(match));
     codeLength = getCodeLength(getParam(match));
 
-    
     i = 0;
     j = 0;
     elementAmount = 0;
@@ -209,12 +208,6 @@ Match generateCode(Match match) {
         }
     }
     match = setCodeToGuess(match, codeToGuess);
-    i = 0;
-    while (i < getCodeLength(getParam(match))) {
-        printf("%c", getValue(codeToGuess, i));
-        i++;
-    }
-    printf("\n");
     return match;
 }
 
@@ -253,8 +246,17 @@ void printAttempts(Match match) {
     i = 0;
     Code attempts;
     Result attemptResult;
+    while (j < 62) {
+        printf("%c", 196);
+        j++;
+    }
+    printf("\n");
+    printf("%c - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  %c\n", 218, 191);
     while (i < getNumAttempts(getParam(match))) {
-        printf("Tentativo numero %d: ", i + 1);
+        printf("%c Tentativo numero %d: ", 179, i + 1);
+        if (i < 9) {
+            printf(" ");
+        }
         attempts = getAttempts(match, i);
         attemptResult = getAttemptsResult(match, i);
         j = 0;
@@ -262,26 +264,38 @@ void printAttempts(Match match) {
             printf(" %c ", getValue(attempts, j));
             j++;
         }
-        printf("\t \t Esito: %d-%d", getElemResult(attemptResult, 0), getElemResult(attemptResult, 1));
-        printf("\n");
+        printf("\t \t Esito: %d-%d  %c\n", getElemResult(attemptResult, 0), getElemResult(attemptResult, 1), 179);
+        if (i == getNumAttempts(getParam(match)) - 1) {
+            printf("%c - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  %c\n", 192, 217);
+        } else {
+            printf("%c - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  %c\n", 179, 179);
+        }
         i++;
     }
+    j = 0;
+    while (j < 62) {
+        printf("%c", 196);
+        j++;
+    }
+    printf("\n");
     return;
 }
 
-void gameChoice(Match match) {
+int gameChoice(Match match) {
     Parameters param;
     Code codeToGuess;
     Code attempts;
     Result attemptsResult;
-    int attemptsSoFar;
 
+    int attemptsSoFar;
     int ended;
     int i;
     char stage;
     char choice;
+    int j;
 
     i = 0;
+    j = 0;
     ended = 0;
     stage = 'a';
     choice = ' ';
@@ -296,7 +310,6 @@ void gameChoice(Match match) {
         i++;
     }
     
-
     while (ended == 0) {
         showChoice(stage);
         choice = userChoice(1, 3);
@@ -307,6 +320,7 @@ void gameChoice(Match match) {
             printAttempts(match);
             match = winner(match);
             match = setAttemptsSoFar(match, getAttemptsSoFar(match) + 1);
+            i = 0;
             if (getAttemptsSoFar(match) == -1) {
                 ended = 1;
             }
@@ -314,13 +328,15 @@ void gameChoice(Match match) {
             system("cls");
             saveGame(match);
             ended = 1;
+            menu();
         } else if (choice == '3') {
             system("cls");
-            ended = menu();
+            ended = 1;
+            menu();
         }
     }
     
-    return;
+    return ended;
 }
 
 Match newAttempt(Match match) {
@@ -353,7 +369,7 @@ Match validateInput(Match match, int attemptsSoFar, Code attempt) {
     i = 0;
     while (i < codeLength) {
         do {    
-            printf("Inserire il carattere numero %d: ", i + 1);
+            printf("Inserire il numero in posizione %d: ", i + 1);
             input = getchar();
             fflush(stdin);
             if (input < START_NUMBERS_ASCII || input > numSymbol + START_NUMBERS_ASCII) {

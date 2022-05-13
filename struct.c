@@ -51,8 +51,6 @@ int getNumAttempts(Parameters param) {
     return numAttempts;
 }
 
-
-
 Parameters setNumSymbol(Parameters param, int numSymbol) {
     param.numSymbol = numSymbol;
     return param;
@@ -73,6 +71,7 @@ Parameters setNumAttempts(Parameters param, int numAttempts) {
     return param;
 }
 
+// FUNZIONI D'ACCESSO A MATCH
 Code getCodeToGuess(Match match) {
 	Code codeToGuess;
 	codeToGuess = match.codeToGuess;
@@ -127,3 +126,4 @@ Match setAttemptResult(Match match, int index, Result attemptResult) {
     match.attemptsResult[index] = attemptResult;
     return match;
 }
+
