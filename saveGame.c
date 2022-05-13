@@ -8,7 +8,7 @@ void saveGame(Match match) {
     char extention[] = ".dat";
     char nameFile[] = "/match";
     FILE *file;
-    char path[] = "C:/salvatg";
+    char path[] = "C:/Users/acurr/Desktop/Universita/I Anno - II Semestre/Laboratorio di Informatica/MasterMind/mastermind-C/save";
     strcat(nameFile, extention);
     strcat(path, nameFile);
     file = fopen(path, "w");
@@ -32,7 +32,7 @@ int loadGame() {
     char extention[] = ".dat";
     char nameFile[] = "/match";
     FILE *file;
-    char path[] = "C:/salvatg";
+    char path[] = "C:/Users/acurr/Desktop/Universita/I Anno - II Semestre/Laboratorio di Informatica/MasterMind/mastermind-C/save";
     strcat(path, nameFile);
     strcat(path, extention);
     file = fopen(path, "r");
@@ -42,8 +42,9 @@ int loadGame() {
     }
     else
     {
-        printf("Caricamento partita\n");
+        printf("Partita caricata correttamente\n");
         fread(&match, sizeof(match), 1, file);
+        printAttempts(match);
         ended = gameChoice(match);
     }
     fclose(file);
