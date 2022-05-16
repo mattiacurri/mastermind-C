@@ -11,7 +11,7 @@ void saveGame(Match match) {
     char path[] = "C:/Users/acurr/Desktop/Universita/I Anno - II Semestre/Laboratorio di Informatica/MasterMind/mastermind-C/save";
     strcat(nameFile, extention);
     strcat(path, nameFile);
-    file = fopen(path, "w");
+    file = fopen(path, "wb");
     if (file == NULL)
     {
         printf("Errore nel salvataggio!\n ");
@@ -35,7 +35,7 @@ int loadGame() {
     char path[] = "C:/Users/acurr/Desktop/Universita/I Anno - II Semestre/Laboratorio di Informatica/MasterMind/mastermind-C/save";
     strcat(path, nameFile);
     strcat(path, extention);
-    file = fopen(path, "r");
+    file = fopen(path, "rb");
     if (file == NULL)
     {
         printf("Errore nel salvataggio!\n");

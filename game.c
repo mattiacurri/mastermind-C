@@ -5,8 +5,10 @@
 #include "./game.h"
 
 int main() {
-    menu();
-
+    // menu();
+    int top10[30];
+    loadTop10(top10);
+    viewTop10(top10, 10);
     system("pause");
     return 0;
 }
@@ -260,14 +262,29 @@ void printAttempts(Match match) {
 
     codeLength = getCodeLength(getParam(match));
     
-    j = 0;
     // STYLING
+    printf("BENVENUTO CODIFICATORE! IL MASTERMIND TI DA' IL BENVENUTO.\n");
+    printf("LA TUA MISSIONE SARA' QUELLA DI INDOVINARE IL CODICE CHE HO ACCURATAMENTE SCELTO PER TE.\n");
+    printf("BUONA FORTUNA, E CHE VINCA IL MIGLIORE, CIOE' ME :).\n");
+    j = 0;
     while (j < 62) {
         printf("%c", 196);
         j++;
     }
     printf("\n");
     printf("%c - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  %c\n", 218, 191);
+    printf("%c                  CODICE SEGRETO: ", 179);
+    i = 0;
+    while (i < getCodeLength(getParam(match))) {
+        printf(" * ");
+        i++;
+    }
+    if (getCodeLength(getParam(match)) == CODE_LENGTH_INTERMEDIATE) {
+        printf("              %c\n", 179);
+    } else {
+        printf("                 %c\n", 179);
+    }
+    printf("%c - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  %c\n", 179, 179);
     // END STYLING
     
     i = 0;
@@ -496,7 +513,7 @@ Match checkCode(Match match, Code input, Code codeToGuess) {
                 {
                     found = 1;
                     used[j] = 1;
-                    userUsed[j] = 1;
+                    userUsed[i] = 1;
                     attempt = setElemResult(attempt, 1, getElemResult(attempt, 1) + 1);
                 }
                 j++;
@@ -505,6 +522,7 @@ Match checkCode(Match match, Code input, Code codeToGuess) {
         }
     }
 
+    printf("\n");
     match = setAttemptResult(match, getAttemptsSoFar(match), attempt);
     
     return match;
@@ -541,10 +559,12 @@ Match winner(Match match) {
     
     if (getElemResult(attemptResult, 0) == codeLength) {
         printf("PARTITA FINITA: HA VINTO IL DECODIFICATORE!\n");
+        printf("CHE DISDETTA...VOGLIO LA RIVINCITA!\n");
         match = setAttemptsSoFar(match, -2);
     } else if (getAttemptsSoFar(match) == getNumAttempts(getParam(match)) - 1) {
         printf("PARTITA FINITA: HA VINTO IL CODIFICATORE!\n");
-        printf("Il codice era: ---");
+        printf("TE L'AVEVO DETTO, SONO TROPPO FORTE.\n");
+        printf("Anyway, il codice era: ---");
         i = 0;
         while (i < codeLength) {
             printf("  %c  ", getValue(codeToGuess, i));
@@ -556,3 +576,51 @@ Match winner(Match match) {
     return match;
 }
 
+void loadTop10(int top10[30]) {
+    FILE *fp;
+    char buffer[256];
+    int i;
+    int counter;
+    int number;
+    
+    fp = fopen("C:\\Users\\acurr\\Desktop\\Universita\\I Anno - II Semestre\\Laboratorio di Informatica\\MasterMind\\mastermind-C\\top10.txt", "r");
+    
+    i = 0;
+    counter = 0;
+    number = 0;
+    while (fgets(buffer, 256, fp) != NULL) {
+        number = 0;
+        i = 0;
+        while (buffer[i] != '\0') {
+            if (buffer[i] == 44) {
+                i++;
+                while (buffer[i] >= '0' && buffer[i] <= '9') {
+                    number = (number * 10) + (buffer[i] - START_NUMBERS_ASCII);
+                    top10[counter] = number;
+                    i++;
+                }
+                printf("\n");
+                counter++;
+            } else {
+
+            }
+            i++;
+        }
+    }
+
+    i = 0;
+    while (i < 30) {
+        printf("RISULTATO NUMERO %d: %d\n", i + 1, top10[i]);
+        i++;
+    }
+    return;
+}
+
+void viewTop10(int top10[30], int index) {
+    int i;
+    i = index;
+    while (i < index + 10) {
+        printf("POSIZIONE %d: %d\n", i, top10[i]);
+        i++;
+    } 
+}
