@@ -1,25 +1,26 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "./struct.h"
-#include "./rules.h"
-#include "./savegame.h"
+#include "./struct/struct.h"
+#include "./rules/rules.h"
+#include "./save/saveGame.h"
+#include "./top10/top10.h"
 
-int menu();
+void menu();
 char userChoice(int min, int max);
 void showChoice(char choice);
-int startMatch();
-int gameLoop(int isNew);
+void startMatch();
+void gameLoop();
 
 Match initAttempts(Match match);
 Match generateCode(Match match);
-int gameChoice(Match match);
+void gameChoice(Match match, int isLoaded);
 Match newAttempt(Match match);
 Match validateInput(Match match, int attemptsSoFar, Code attempt);
 Match checkCode(Match match, Code input, Code codeToGuess);
 int wrongPosition(int i, char c, Code codeToGuess, int codeLength);
 void printAttempts(Match match);
-Match winner(Match match);
-void loadTop10(int top10[30]);
-void viewTop10(int top10[30], int index);
+int winner(Match match);
+void backToMenu();
+
 #endif

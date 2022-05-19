@@ -1,0 +1,22 @@
+
+	Parametri del gioco a seconda della difficolta':
+
+		PRINCIPIANTE:                                                        
+		- lunghezza del codice da indovinare: 3 cifre                       
+		- numero di tentativi ammessi: 20                                   
+		- cifre ripetute: no                                                
+		- cifre possibili presenti nel codice: 0, 1, 2, 3, 4, 5             
+	
+	
+		INTERMEDIO:                                                        
+		- lunghezza del codice da indovinare: 4 cifre                       
+		- numero di tentativi ammessi: 15                                  
+		- cifre ripetute: no                                               
+		- cifre possibili presenti nel codice: 0, 1, 2, 3, 4, 5, 6, 7      
+	
+	
+		AVANZATO:                                                           
+		- lunghezza del codice da indovinare: 4 cifre                        
+		- numero di tentativi ammessi: 9                                     
+		- cifre ripetute: si                                                
+		- cifre possibili presenti nel codice: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 

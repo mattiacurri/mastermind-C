@@ -1,7 +1,7 @@
 #ifndef _STRUCT_H
 #define _STRUCT_H
 
-#include "./global.h"
+#include "../global.h"
 
 typedef struct Code {
     char value[CODE_LENGTH_INTERMEDIATE];
@@ -25,6 +25,20 @@ typedef struct Match {
     Result attemptsResult[NUM_ATTEMPTS_BASIC];
     int attemptsSoFar;
 } Match;
+
+typedef struct Id {
+	char playerID[MAX_DIM_ID];
+} Id;
+
+typedef struct Record {
+	int value;
+} Record;
+
+typedef struct Topten {
+	Id pID[11];
+	Record score[11];
+	int level;
+} Topten;
 
 // FUNZIONI DI ACCESSO A CODE
 char getValue(Code code, int index);
@@ -54,5 +68,18 @@ Match setParameters(Match match, Parameters param);
 Match setAttempt(Match match, int index, Code attempt);
 Match setAttemptResult(Match match, int index, Result attemptResult);
 Match setAttemptsSoFar(Match match, int attemptsSoFar);
+
+int getScore(Record score);
+Record setScore(Record score, int value);
+
+Record getRecord(Topten topten, int index);
+Topten setRecord(Topten topten, int index, Record score);
+
+Id getID();
+Topten setID(Topten topten, int index, Id value);
+
+
+char getPlayerId(Id pID, int index);
+Id setPlayerId(Id pID, int index, char value);
 
 #endif

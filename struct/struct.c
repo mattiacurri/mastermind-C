@@ -127,3 +127,42 @@ Match setAttemptResult(Match match, int index, Result attemptResult) {
     return match;
 }
 
+// FUNZIONI DI ACCESSO DI SCORE
+int getScore(Record score) {
+    int value;
+    value = score.value;
+    return value;
+}
+
+Record setScore(Record score, int value) {
+    score.value = value;
+    return score;
+}
+
+// FUNZIONI DI ACCESSO DI TOP 10
+Record getRecord(Topten topten, int index) {
+	Record record;
+	record = topten.score[index];
+	return record;
+}
+
+Topten setRecord(Topten topten, int index, Record score) {
+    topten.score[index] = score;
+    return topten;
+}
+
+char getPlayerId(Id pID, int index) {
+	char value;
+	value = pID.playerID[index];
+	return value;
+}
+
+Id setPlayerId(Id pID, int index, char value) {
+	pID.playerID[index] = value;
+	return pID;
+}
+
+Topten setID(Topten topten, int index, Id value) {
+	topten.pID[index] = value;
+	return topten;
+}
