@@ -37,7 +37,6 @@ typedef struct Record {
 typedef struct Topten {
 	Id pID[11];
 	Record score[11];
-	int level;
 } Topten;
 
 // FUNZIONI DI ACCESSO A CODE
@@ -75,11 +74,10 @@ Record setScore(Record score, int value);
 Record getRecord(Topten topten, int index);
 Topten setRecord(Topten topten, int index, Record score);
 
-Id getID();
-Topten setID(Topten topten, int index, Id value);
+Id getPlayerId(Topten topten, int index);
+Topten setPlayerId(Topten topten, int index, Id value);
 
-
-char getPlayerId(Id pID, int index);
-Id setPlayerId(Id pID, int index, char value);
+char getId(Id pID, int index);
+Id setID(Id pID, int index, char value);
 
 #endif

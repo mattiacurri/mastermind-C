@@ -11,7 +11,7 @@
 #define NUM_ATTEMPTS_ADVANCED 9
 #define START_NUMBERS_ASCII 48
 #define NUM_RESULTS 2
-#define MAX_DIM_ID 10
+#define MAX_DIM_ID 4
 #define TRUE 1
 #define FALSE 0
 

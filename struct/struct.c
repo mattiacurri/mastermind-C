@@ -151,18 +151,24 @@ Topten setRecord(Topten topten, int index, Record score) {
     return topten;
 }
 
-char getPlayerId(Id pID, int index) {
+Id getPlayerId(Topten topten, int index) {
+	Id value;
+	value = topten.pID[index];
+	return value;
+}
+
+Topten setPlayerId(Topten topten, int index, Id value) {
+	topten.pID[index] = value;
+	return topten;
+}
+
+char getId(Id pID, int index) {
 	char value;
 	value = pID.playerID[index];
 	return value;
 }
 
-Id setPlayerId(Id pID, int index, char value) {
+Id setID(Id pID, int index, char value) {
 	pID.playerID[index] = value;
 	return pID;
-}
-
-Topten setID(Topten topten, int index, Id value) {
-	topten.pID[index] = value;
-	return topten;
 }

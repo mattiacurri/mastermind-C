@@ -21,6 +21,13 @@ Match checkCode(Match match, Code input, Code codeToGuess);
 int wrongPosition(int i, char c, Code codeToGuess, int codeLength);
 void printAttempts(Match match);
 int winner(Match match);
+
+
+void checkTop10(Match match);
+
+
 void backToMenu();
+void showLogo();
+
 
 #endif

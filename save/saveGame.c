@@ -6,13 +6,9 @@
 #include "../game.h"
 
 void saveGame(Match match) {
-    char extention[] = ".dat";
-    char nameFile[] = "/match";
     FILE *file;
-    char path[] = "C:\\eclipse\\workspace\\mastermind18-05\\src\\save\\savedMatch";
-    strcat(nameFile, extention);
-    strcat(path, nameFile);
-    file = fopen(path, "wb");
+
+    file = fopen(PATH, "wb");
     if (file == NULL)
     {
         printf("Errore nel salvataggio!\n ");
@@ -27,25 +23,33 @@ void saveGame(Match match) {
 }
 
 void loadGame() {
+    FILE *file;
     system("cls");
+
     Match match;
     int isLoaded;
-    char extention[] = ".dat";
-    char nameFile[] = "/match";
-    FILE *file;
-    char path[] = "C:\\eclipse\\workspace\\mastermind18-05\\src\\save\\savedMatch";
-    strcat(path, nameFile);
-    strcat(path, extention);
-    file = fopen(path, "rb");
+    int attemptsSoFar;
+    int isCodeGuessed;
+    int numAttempts;
+    int codeLength;
+
+    file = fopen(PATH, "rb");
     if (file == NULL)
     {
         printf("Errore nell'apertura del file!\n");
+        backToMenu();
     }
     else
     {
         printf("Partita caricata correttamente\n");
         fread(&match, sizeof(match), 1, file);
-        if (getAttemptsSoFar(match) == getNumAttempts(getParam(match)) || getElemResult(getAttemptsResult(match, getAttemptsSoFar(match) - 1), 0) == getCodeLength(getParam(match))) {
+
+        attemptsSoFar = getAttemptsSoFar(match);
+        numAttempts = getNumAttempts(getParam(match));
+        codeLength = getCodeLength(getParam(match));
+        isCodeGuessed = getElemResult(getAttemptsResult(match, attemptsSoFar - 1), 0);
+
+        if (attemptsSoFar == numAttempts || isCodeGuessed == codeLength) {
         	printf("Partita terminata.\n");
         	printf("Si prega di iniziare una nuova partita dal menu.\n");
         	backToMenu();

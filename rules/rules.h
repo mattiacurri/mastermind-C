@@ -8,5 +8,6 @@
 #define HOWTOPLAY_PATH "C:\\eclipse\\workspace\\mastermind18-05\\src\\rules\\howToPlay.txt"
 
 void showRules();
+void showTutorial();
 
 #endif

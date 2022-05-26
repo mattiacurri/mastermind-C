@@ -19,50 +19,86 @@ void menu() {
 	stage = 'm';
 	showChoice(stage);
 
-	choice = userChoice(1, 4);
+	choice = userChoice(0, 3);
 	system("cls");
 
 	if (choice == '1') {
 		gameLoop();
 	} else if (choice == '2') {
 		viewTop10();
-		backToMenu();
-	}
-	else if (choice == '3') {
+	} else if (choice == '3') {
 		showRules();
+	} else if (choice == '0') {
+		printf("Ma come? Gia' te ne vai? :(\n");
 	}
+	return;
+}
+
+
+void showLogo() {
+	printf("                  _                     _           _ \n");
+	printf(" _ __   __ _  ___| |_  ___  _ _  _ __  (_) _ _   __| |\n");
+	printf("| '  \\ / _` |(_-/|  _|/ -_)| '_|| '  \\ | || ' \\ / _` |\n");
+	printf("|_|_|_|\\__/_|/__/ \\__|\\___||_|  |_|_|_||_||_||_|\\__/_|\n");
+	printf("\n");
 	return;
 }
 
 void showChoice(char choice) {
 	if (choice == 'm') {
-		printf("                  _                     _           _ \n");
-		printf(" _ __   __ _  ___| |_  ___  _ _  _ __  (_) _ _   __| |\n");
-		printf("| '  \\ / _` |(_-/|  _|/ -_)| '_|| '  \\ | || ' \\ / _` |\n");
-		printf("|_|_|_|\\__/_|/__/ \\__|\\___||_|  |_|_|_||_||_||_|\\__/_|\n");
-		printf("\n");
-		printf("--- MENU PRINCIPALE ---\n");
-		printf("1. GIOCA PARTITA \n");
-		printf("2. TOP 10\n");
-		printf("3. GUIDA AL GIOCO\n");
-		printf("4. ESCI DAL GIOCO\n");
-		printf("--- MENU PRINCIPALE ---\n");
+		showLogo();
+		printf("            %c--- MENU PRINCIPALE ---%c\n", 218, 191);
+		printf("            |                       |\n");
+		printf("            |   1. GIOCA PARTITA    |\n");
+		printf("            |   2. TOP 10           |\n");
+		printf("            |   3. GUIDA AL GIOCO   |\n");
+		printf("            |                       |\n");
+		printf("            |   0. Esci dal gioco   |\n");
+		printf("            |                       |\n");
+		printf("            %c--- MENU PRINCIPALE ---%c\n", 192, 217);
 		printf("\n");
 	} else if (choice == 'n') {
+		showLogo();
 		printf("HAI SCELTO DI GIOCARE UNA PARTITA. \n");
 		printf("SCEGLI TRA LE SEGUENTI OPZIONI:\n");
 		printf("1. NUOVA PARTITA\n");
 		printf("2. CARICA PARTITA\n");
+		printf("\n");
+		printf("0. Torna al menu\n");
+		printf("\n");
 	} else if (choice == 'l') {
+		showLogo();
 		printf("SCEGLIERE IL LIVELLO DI DIFFICOLTA' TRA I SEGUENTI\n");
 		printf("1. PRINCIPIANTE\n");
 		printf("2. INTERMEDIO\n");
 		printf("3. AVANZATO\n");
+		printf("\n");
+		printf("0. Torna al menu\n");
+		printf("\n");
 	} else if (choice == 'a') {
 		printf("SCEGLIERE UN'OPZIONE:\n");
 		printf("1. INSERIRE TENTATIVO\n");
 		printf("2. SALVARE LA PARTITA\n");
-		printf("3. TORNARE AL MENU'\n");
+		printf("\n");
+		printf("0. Torna al menu\n");
+		printf("\n");
+	} else if (choice == 't') {
+		showLogo();
+		printf("SCEGLIERE LA TOP 10 DA VISUALIZZARE\n");
+		printf("1. DIFFICOLTA' PRINCIPIANTE\n");
+		printf("2. DIFFICOLTA' INTERMEDIO\n");
+		printf("3. DIFFICOLTA' AVANZATO\n");
+		printf("\n");
+		printf("0. Torna al menu\n");
+		printf("\n");
+	} else if (choice == 's') {
+		showLogo();
+		printf("SCEGLIERE UN'OPZIONE:\n");
+		printf("1. VISUALIZZARE LA TOP 10\n");
+		printf("2. RESETTARE LA TOP 10\n");
+		printf("\n");
+		printf("0. Torna al menu\n");
+		printf("\n");
 	}
 	return;
 }
@@ -95,16 +131,17 @@ void gameLoop() {
 	stage = 'n';
 
 	showChoice(stage);
-	choice = userChoice(1, 2);
+	choice = userChoice(0, 2);
 	system("cls");
 
 	if (choice == '1') {
 		stage = 'l';
 		showChoice(stage);
-		choice = userChoice(1, 3);
-		system("cls");
+		choice = userChoice(0, 3);
+
 
 		if (choice == '1') {
+			system("cls");
 			param = setNumSymbol(param, NUM_SYMBOL_BASIC);
 			param = setCodeLength(param, CODE_LENGTH_BASIC);
 			param = setRepeated(param, FALSE);
@@ -118,6 +155,7 @@ void gameLoop() {
 			match = setAttemptsSoFar(match, 0);
 			gameChoice(match, FALSE);
 		} else if (choice == '2') {
+			system("cls");
 			param = setNumSymbol(param, NUM_SYMBOL_INTERMEDIATE);
 			param = setCodeLength(param, CODE_LENGTH_INTERMEDIATE);
 			param = setRepeated(param, FALSE);
@@ -131,6 +169,7 @@ void gameLoop() {
 			match = setAttemptsSoFar(match, 0);
 			gameChoice(match, FALSE);
 		} else if (choice == '3') {
+			system("cls");
 			param = setNumSymbol(param, NUM_SYMBOL_ADVANCED);
 			param = setCodeLength(param, CODE_LENGTH_INTERMEDIATE);
 			param = setRepeated(param, TRUE);
@@ -143,9 +182,15 @@ void gameLoop() {
 
 			match = setAttemptsSoFar(match, 0);
 			gameChoice(match, FALSE);
+		} else if (choice == '0') {
+			system("cls");
+			menu();
 		}
 	} else if (choice == '2') {
+		system("cls");
 		loadGame();
+	} else if (choice == '0') {
+		menu();
 	}
 
 	return;
@@ -167,9 +212,9 @@ Match generateCode(Match match) {
 	i = 0;
 	j = 0;
 	isValid = 1;
-	srand(time(0));
+	srand(time(NULL));
 
-	if (getRepeated(getParam(match)) == 0) {
+	if (getRepeated(getParam(match)) == FALSE) {
 		while (i < codeLength) {
 			j = 0;
 			isValid = 1;
@@ -236,14 +281,14 @@ Match initAttempts(Match match) {
 
 void printAttempts(Match match) {
 	Code attempts;
-	Code codeToGuess;
+
 	Result attemptResult;
 	int i;
 	int j;
 	int codeLength;
 
 	codeLength = getCodeLength(getParam(match));
-	codeToGuess = getCodeToGuess(match);
+
 
 	// STYLING
 	j = 0;
@@ -322,54 +367,37 @@ void printAttempts(Match match) {
 }
 
 void gameChoice(Match match, int isLoaded) {
-	Parameters param;
-	Code codeToGuess;
-	Code attempts;
-	Result attemptsResult;
-
-	int attemptsSoFar;
 	int ended;
 	char stage;
 	char choice;
-	int i;
 
 
 	ended = FALSE;
 	stage = 'a';
 	choice = ' ';
-	i = 0;
-
-
-	// NECESSARIE PER CARICARE LA PARTITA
-	param = getParam(match);
-	codeToGuess = getCodeToGuess(match);
-	attemptsSoFar = getAttemptsSoFar(match);
-	while (i < attemptsSoFar) {
-		attemptsResult = getAttemptsResult(match, i);
-		attempts = getAttempts(match, i);
-		i++;
-	}
 
 	while (ended == FALSE) {
 		showChoice(stage);
-		choice = userChoice(1, 3);
+		choice = userChoice(0, 2);
 		if (choice == '1') {
 			system("cls");
 			printAttempts(match);
 			match = newAttempt(match);
 			ended = winner(match);
-			match = setAttemptsSoFar(match, getAttemptsSoFar(match) + 1);
 			if (ended == TRUE) {
+				match = setAttemptsSoFar(match, getAttemptsSoFar(match) + 1);
 				if (isLoaded == TRUE) {
 					saveGame(match);
 				}
 				backToMenu();
+			} else {
+				match = setAttemptsSoFar(match, getAttemptsSoFar(match) + 1);
 			}
 		} else if (choice == '2') {
 			saveGame(match);
 			ended = TRUE;
 			backToMenu();
-		} else if (choice == '3') {
+		} else if (choice == '0') {
 			system("cls");
 			ended = TRUE;
 			menu();
@@ -424,8 +452,7 @@ Match validateInput(Match match, int attemptsSoFar, Code attempt) {
 				j = 0;
 				while (j < validInput) {
 					if (getValue(attempt, j) == input) {
-						printf(
-								"Errore: hai inserito un numero che avevi gia' inserito, in questa difficolta' ricorda che non ci possono essere cifre ripetute!\n");
+						printf("Errore: hai inserito un numero che avevi gia' inserito, in questa difficolta' ricorda che non ci possono essere cifre ripetute!\n");
 						input = START_NUMBERS_ASCII - 1;
 					}
 					j++;
@@ -535,28 +562,19 @@ int winner(Match match) {
 	int codeLength;
 	int i;
 	int ended;
-	Topten topten;
-	topten = loadTop10(match);
-	int isTopScorer;
-	isTopScorer = FALSE;
+
 	ended = FALSE;
+
 	codeToGuess = getCodeToGuess(match);
 	attemptResult = getAttemptsResult(match, getAttemptsSoFar(match));
 	codeLength = getCodeLength(getParam(match));
 
 	if (getElemResult(attemptResult, 0) == codeLength) {
 		printf("PARTITA FINITA: HA VINTO IL DECODIFICATORE!\n");
-		printf("CHE DISDETTA...VOGLIO LA RIVINCITA!\n");
-		isTopScorer = isTopScore(match, topten);
-		if (isTopScorer == TRUE) {
-			printf("TRUE\n");
-			topten = addScoreInTopTen(match, topten);
-			saveTop10(match, topten);
-		}
+		checkTop10(match);
 		ended = TRUE;
 	} else if (getAttemptsSoFar(match) == getNumAttempts(getParam(match)) - 1) {
 		printf("PARTITA FINITA: HA VINTO IL CODIFICATORE!\n");
-		printf("TE L'AVEVO DETTO, SONO TROPPO FORTE.\n");
 		printf("Il codice era: ---");
 		i = 0;
 		while (i < codeLength) {
@@ -569,8 +587,38 @@ int winner(Match match) {
 	return ended;
 }
 
+void checkTop10(Match match) {
+	Topten topten;
+	int isTopScorer;
+	char playerName[MAX_DIM_ID];
+	int i;
+
+	topten = loadTop10(match);
+
+	i = 0;
+	while (i < MAX_DIM_ID) {
+		playerName[i] = ' ';
+		i++;
+	}
+
+	isTopScorer = isTopScore(match, topten);
+
+	if (isTopScorer == TRUE) {
+		printf("COMPLIMENTI! IL TUO RISULTATO FA PARTE DELLA TOP 10!\n");
+		printf("INSERIRE NOME: ");
+		scanf("%3s", &playerName);
+		fflush(stdin);
+
+		topten = addScoreInTopTen(match, topten, playerName);
+		saveTop10(match, topten);
+
+		printf("Partita terminata\n");
+	}
+	return;
+}
+
 void backToMenu() {
-	printf("\nPremere un tasto per tornare al menu...\n");
+	printf("\nPremere un tasto per tornare al menu...");
 	getch();
 	system("cls");
 	menu();
