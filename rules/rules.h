@@ -4,8 +4,8 @@
 #include "../game.h"
 
 #define BUFFER_SIZE 256
-#define RULES_PATH "C:\\eclipse\\workspace\\mastermind18-05\\src\\rules\\rules.txt"
-#define HOWTOPLAY_PATH "C:\\eclipse\\workspace\\mastermind18-05\\src\\rules\\howToPlay.txt"
+#define RULES_PATH ""
+#define HOWTOPLAY_PATH ""
 
 void showRules();
 void showTutorial();

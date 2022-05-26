@@ -5,9 +5,9 @@
 #include "../game.h"
 #include "./top10.h"
 
-#define BASTOP10PATH "C:\\eclipse\\workspace\\mastermind18-05\\src\\top10\\BAStop10.dat"
-#define INTTOP10PATH "C:\\eclipse\\workspace\\mastermind18-05\\src\\top10\\INTtop10.dat"
-#define ADVTOP10PATH "C:\\eclipse\\workspace\\mastermind18-05\\src\\top10\\ADVtop10.dat"
+#define BASTOP10PATH ""
+#define INTTOP10PATH ""
+#define ADVTOP10PATH ""
 
 Topten rightShift(Topten topten, int indexScore) {
 	Topten temp;
