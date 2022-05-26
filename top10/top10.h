@@ -1,6 +1,10 @@
 #ifndef TOP10_H_
 #define TOP10_H_
 
+#define BASTOP10PATH ""
+#define INTTOP10PATH ""
+#define ADVTOP10PATH ""
+
 Topten rightShift(Topten topten, int indexScore);
 int isTopScore(Match match, Topten topten);
 Topten addScoreInTopTen(Match match, Topten topten, char playerName[MAX_DIM_ID]);

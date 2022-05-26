@@ -5,10 +5,6 @@
 #include "../game.h"
 #include "./top10.h"
 
-#define BASTOP10PATH ""
-#define INTTOP10PATH ""
-#define ADVTOP10PATH ""
-
 Topten rightShift(Topten topten, int indexScore) {
 	Topten temp;
 

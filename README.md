@@ -60,10 +60,5 @@ First of all run
 	git clone https://github.com/mattiacurri/mastermind-C
 
 Then you need an IDE that support MinGW compiler. I used Eclipse for this project
-<<<<<<< HEAD
 	(https://www.eclipse.org/downloads/) because it makes automatically the MakeFile configuration to link the resources.
-In rules.h, saveGame.h and top10.h you need to insert the path of respectively "howToPlay.txt", "rules.txt", "match.dat", "bastop10.dat"
-"inttop10.dat" and "advtop10.dat" according to where you have locate this file
-=======
-	(https://www.eclipse.org/downloads/) because it makes automatically the MakeFile configuration to link the resources.
->>>>>>> c5dfc458bb3ea8f3e7e112a54065e513e8d7de4e
+In "saveGame.h", "rules.h", "top10.h" you need to insert respectively the path of "rules.txt", "howToPlay.txt", "match.dat", "bastop10.dat", "inttop10.dat", "advtop10.dat" according to where you are going to save this file, note that the game create "match.dat" when you save in savedMatch folder
