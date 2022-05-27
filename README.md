@@ -17,18 +17,18 @@ Non bisogna comunicare quali cifre sono giuste o sbagliate ma solo quante.
 Se il decodificatore riesce ad indovinare il codice entro il numero di tentativi predeterminati allora quest'ultimo 
 vince la partita, altrimenti vince il codificatore.
 
-# How to Play my MasterMind
+# How to Play
 Il gioco e' cosi strutturato:
 
 Inizializzazione della partita:
-	Il giocatore, dal menu' principale, inserisce 1 per giocare la partita. 
+	il giocatore, dal menu' principale, inserisce 1 per giocare la partita. 
 	Dopo di che viene chiesto all'utente se caricare l'ultima partita salvata oppure 
 	se iniziare una nuova partita. Nel caso il giocatore voglia continuare una partita 
 	allora comincerà direttamente a giocare, altrimenti viene 
 	richiesto di inserire il livello di difficoltà.
 
 Fase di Gioco:
-	L'utente può tornare al MENU senza salvare, SALVARE la partita 
+	l'utente può tornare al MENU senza salvare, SALVARE la partita 
 	oppure inserire il proprio tentativo. L'utente inserisce un elemento del suo 
 	tentativo alla volta. Per ogni tentativo viene restituito 
 	all'utente il risultato e può proseguire. Per sapere quanti tentativi sono rimasti, 
