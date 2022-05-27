@@ -20,14 +20,14 @@ vince la partita, altrimenti vince il codificatore.
 # How to Play my MasterMind
 Il gioco e' cosi strutturato:
 
-Inizializzazione della partita
+Inizializzazione della partita:
 	Il giocatore, dal menu' principale, inserisce 1 per giocare la partita. 
 	Dopo di che viene chiesto all'utente se caricare l'ultima partita salvata oppure 
 	se iniziare una nuova partita. Nel caso il giocatore voglia continuare una partita 
 	allora comincerà direttamente a giocare, altrimenti viene 
 	richiesto di inserire il livello di difficoltà.
 
-Fase di Gioco
+Fase di Gioco:
 	L'utente può tornare al MENU senza salvare, SALVARE la partita 
 	oppure inserire il proprio tentativo. L'utente inserisce un elemento del suo 
 	tentativo alla volta. Per ogni tentativo viene restituito 
@@ -61,4 +61,4 @@ First of all run
 
 Then you need an IDE that support MinGW compiler. I used Eclipse for this project
 	(https://www.eclipse.org/downloads/) because it makes automatically the MakeFile configuration to link the resources.
-In "saveGame.h", "rules.h", "top10.h" you need to insert respectively the path of "rules.txt", "howToPlay.txt", "match.dat", "bastop10.dat", "inttop10.dat", "advtop10.dat" according to where you are going to save this file, note that the game create "match.dat" when you save in savedMatch folder
+In "saveGame.h", "rules.h", "top10.h" you need to insert respectively the path of "rules.txt", "howToPlay.txt", "match.dat", "bastop10.dat", "inttop10.dat", "advtop10.dat" according to where you are going to save this file, note that the game generates "match.dat" when you save, in savedMatch folder.
